@@ -4,7 +4,9 @@ const router = Router();
 
 // PRODUCT ROUTES
 router.get("/product", (req, res) => {
-  res.json({ message: "/product route called" });
+  res.json({
+    message: `/product route called, secret is ${(req as any).mySecret}`,
+  });
 });
 
 router.get("/product/:id", () => {});
