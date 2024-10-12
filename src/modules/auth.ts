@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
 
 export const createJWT = (user) => {
   const token = jwt.sign(
@@ -41,3 +42,8 @@ export const protect = (req, res, next) => {
     updateResponseWhenUnauthorized({ res, message: "not valid user" });
   }
 };
+
+export const comparePasswords = (password, hash) =>
+  bcrypt.compare(password, hash);
+
+export const hashPassword = (password) => bcrypt.hash(password, 5);
