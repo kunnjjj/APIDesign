@@ -10,7 +10,7 @@ export const createJWT = (user) => {
   return token;
 };
 
-const updateResponseWhenUnauthorized = ({
+export const updateResponseWhenUnauthorized = ({
   res,
   message = "not authorized",
 }) => {
