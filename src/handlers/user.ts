@@ -6,7 +6,7 @@ import {
   updateResponseWhenUnauthorized,
 } from "../modules/auth";
 
-const createNewUser = async (req, res) => {
+export const createNewUser = async (req, res) => {
   const user = await prisma.user.create({
     data: {
       username: req.body.username,
@@ -18,7 +18,7 @@ const createNewUser = async (req, res) => {
   res.json({ token });
 };
 
-const signIn = async (req, res) => {
+export const signIn = async (req, res) => {
   const user = await prisma.user.findUnique({
     where: {
       username: req.body.username,
@@ -30,7 +30,7 @@ const signIn = async (req, res) => {
   if (!isValid) {
     updateResponseWhenUnauthorized({
       res,
-      message: "username or password does not match",
+      message: "username or password is incorrect",
     });
     return;
   }

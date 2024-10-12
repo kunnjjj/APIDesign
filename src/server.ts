@@ -7,6 +7,9 @@ import cors from "cors";
 // Middleware
 import { protect } from "./modules/auth";
 
+// Handlers
+import { createNewUser, signIn } from "./handlers/user";
+
 const app = express();
 
 app.use(cors());
@@ -27,5 +30,9 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", protect, router);
+
+app.post("/user", createNewUser);
+
+app.post("/sign-in", signIn);
 
 export default app;
