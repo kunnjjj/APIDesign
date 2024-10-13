@@ -33,14 +33,12 @@ enum Status {
   DEPRECATED = "DEPRECATED",
 }
 
-const STATUS_VALIDATION_CHAIN = Object.values({ ...Status }).map((status) =>
-  check("status").equals(status)
-);
+const STATUS_VALUES = Object.values({ ...Status });
 
 const UPDATE_PUT_MIDDLE_WARES = [
   body("title").optional(),
   body("body").optional().isString(),
-  oneOf(STATUS_VALIDATION_CHAIN),
+  body("status").isIn(STATUS_VALUES),
   body("version").optional(),
   body("productId"),
 ];
@@ -64,9 +62,20 @@ router.get("/update-point", () => {});
 
 router.get("/update-point/:id", () => {});
 
-router.put("/update-point/:id", () => {});
+const UPDATE_POINT_PUT_MIDDLE_WARES = [
+  body("name").optional().isString(),
+  body("description").optional().isString(),
+];
 
-router.post("/update-point", () => {});
+router.put("/update-point/:id", UPDATE_POINT_PUT_MIDDLE_WARES, () => {});
+
+const UPDATE_POINT_POST_MIDDLE_WARES = [
+  body("name").isString(),
+  body("description").isString(),
+  body("updateId").exists().isString(),
+];
+
+router.post("/update-point", UPDATE_POINT_POST_MIDDLE_WARES, () => {});
 
 router.delete("/update-point/:id", () => {});
 
