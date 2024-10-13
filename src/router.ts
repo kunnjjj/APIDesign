@@ -1,4 +1,7 @@
 import { Router } from "express";
+import { body, oneOf, check } from "express-validator";
+
+import { handleInputErrors } from "./modules/middewares";
 
 const router = Router();
 
@@ -11,20 +14,48 @@ router.get("/product", (req, res) => {
 
 router.get("/product/:id", () => {});
 
-router.put("/product/:id", () => {});
+const PRODUCT_MIDDLE_WARES = [body("name").isString(), handleInputErrors];
 
-router.post("/product", () => {});
+router.put("/product/:id", PRODUCT_MIDDLE_WARES, (req, res) => {
+  res.send("hello");
+});
+
+router.post("/product", PRODUCT_MIDDLE_WARES, () => {});
 
 router.delete("/product/:id", () => {});
 
 // UPDATE
 router.get("/update", () => {});
 
+enum Status {
+  IN_PROGRESS = "IN_PROGRESS",
+  SHIPPED = "SHIPPED",
+  DEPRECATED = "DEPRECATED",
+}
+
+const STATUS_VALIDATION_CHAIN = Object.values({ ...Status }).map((status) =>
+  check("status").equals(status)
+);
+
+const UPDATE_PUT_MIDDLE_WARES = [
+  body("title").optional(),
+  body("body").optional().isString(),
+  oneOf(STATUS_VALIDATION_CHAIN),
+  body("version").optional(),
+  body("productId"),
+];
+
 router.get("/update/:id", () => {});
 
-router.put("/update/:id", () => {});
+router.put("/update/:id", UPDATE_PUT_MIDDLE_WARES, () => {});
 
-router.post("/update", () => {});
+const UPDATE_POST_MIDDLE_WARES = [
+  body("title").exists().isString(),
+  body("body").exists().isString(),
+  body("productId"),
+];
+
+router.post("/update", UPDATE_POST_MIDDLE_WARES, () => {});
 
 router.delete("/update/:id", () => {});
 

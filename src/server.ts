@@ -20,7 +20,6 @@ app.use(express.urlencoded({ extended: true })); // express to recognize the inc
 app.use((req, res, next) => {
   (req as any).mySecret = "someSecret";
   next();
-  console.log("INSIDE MIDDLEWARE AFTER NEXT");
 });
 
 app.get("/", (req, res) => {
