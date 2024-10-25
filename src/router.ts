@@ -2,27 +2,28 @@ import { Router } from "express";
 import { body, oneOf, check } from "express-validator";
 
 import { handleInputErrors } from "./modules/middewares";
+import {
+  getProducts,
+  createProduct,
+  getOneProduct,
+  updateProduct,
+  deleteProduct,
+} from "./handlers/product";
 
 const router = Router();
 
 // PRODUCT ROUTES
-router.get("/product", (req, res) => {
-  res.json({
-    message: `/product route called, secret is ${(req as any).mySecret}`,
-  });
-});
+router.get("/product", getProducts);
 
-router.get("/product/:id", () => {});
+router.get("/product/:id", getOneProduct);
 
 const PRODUCT_MIDDLE_WARES = [body("name").isString(), handleInputErrors];
 
-router.put("/product/:id", PRODUCT_MIDDLE_WARES, (req, res) => {
-  res.send("hello");
-});
+router.put("/product/:id", PRODUCT_MIDDLE_WARES, updateProduct);
 
-router.post("/product", PRODUCT_MIDDLE_WARES, () => {});
+router.post("/product", PRODUCT_MIDDLE_WARES, createProduct);
 
-router.delete("/product/:id", () => {});
+router.delete("/product/:id", deleteProduct);
 
 // UPDATE
 router.get("/update", () => {});
