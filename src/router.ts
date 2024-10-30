@@ -9,6 +9,13 @@ import {
   updateProduct,
   deleteProduct,
 } from "./handlers/product";
+import {
+  createUpdate,
+  deleteUpdate,
+  getOneUpdate,
+  getUpdates,
+  updateUpdate,
+} from "./handlers/update";
 
 const router = Router();
 
@@ -26,7 +33,7 @@ router.post("/product", PRODUCT_MIDDLE_WARES, createProduct);
 router.delete("/product/:id", deleteProduct);
 
 // UPDATE
-router.get("/update", () => {});
+router.get("/update", getUpdates);
 
 enum Status {
   IN_PROGRESS = "IN_PROGRESS",
@@ -36,6 +43,8 @@ enum Status {
 
 const STATUS_VALUES = Object.values({ ...Status });
 
+router.get("/update/:id", getOneUpdate);
+
 const UPDATE_PUT_MIDDLE_WARES = [
   body("title").optional(),
   body("body").optional().isString(),
@@ -44,9 +53,7 @@ const UPDATE_PUT_MIDDLE_WARES = [
   body("productId"),
 ];
 
-router.get("/update/:id", () => {});
-
-router.put("/update/:id", UPDATE_PUT_MIDDLE_WARES, () => {});
+router.put("/update/:id", UPDATE_PUT_MIDDLE_WARES, updateUpdate);
 
 const UPDATE_POST_MIDDLE_WARES = [
   body("title").exists().isString(),
@@ -54,9 +61,9 @@ const UPDATE_POST_MIDDLE_WARES = [
   body("productId"),
 ];
 
-router.post("/update", UPDATE_POST_MIDDLE_WARES, () => {});
+router.post("/update", UPDATE_POST_MIDDLE_WARES, createUpdate);
 
-router.delete("/update/:id", () => {});
+router.delete("/update/:id", deleteUpdate);
 
 // UPDATE POINT
 router.get("/update-point", () => {});
