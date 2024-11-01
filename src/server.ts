@@ -5,10 +5,13 @@ import morgan from "morgan";
 import cors from "cors";
 
 // Middleware
-import { protect } from "./modules/auth";
+import { protect, updateResponseWhenUnauthorized } from "./modules/auth";
 
 // Handlers
 import { createNewUser, signIn } from "./handlers/user";
+
+// Constants
+import { ErrorType } from "./constants";
 
 const app = express();
 
@@ -33,5 +36,15 @@ app.use("/api", protect, router);
 app.post("/user", createNewUser);
 
 app.post("/sign-in", signIn);
+
+app.use((err, req, res, next) => {
+  if (err.type === ErrorType.AUTHENTICATION) {
+    updateResponseWhenUnauthorized({ res });
+  } else if (err.type === ErrorType.INPUT) {
+    res.status(400).json({ message: "invalid input" });
+  } else {
+    res.status(500).json({ message: "server error" });
+  }
+}); // TODO: Add Route Level Handlers
 
 export default app;
